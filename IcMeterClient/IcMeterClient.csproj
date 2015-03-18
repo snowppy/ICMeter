@@ -64,6 +64,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="controller\Cell.cs" />
+    <Compile Include="controller\Column.cs" />
+    <Compile Include="controller\GrossArea.cs" />
+    <Compile Include="controller\ICMeterAPI.cs" />
+    <Compile Include="controller\Meter.cs" />
+    <Compile Include="controller\MeterGroup.cs" />
+    <Compile Include="controller\ResponseTable.cs" />
+    <Compile Include="controller\Row.cs" />
+    <Compile Include="controller\Token.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -98,7 +107,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="controller\" />
     <Folder Include="model\" />
     <Folder Include="ui\" />
   </ItemGroup>
