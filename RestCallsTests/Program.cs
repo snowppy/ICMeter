@@ -14,7 +14,9 @@ namespace RestCallsTests
 
             var v = new ICMeterAPI();
             var data = v.GetIndoorData(new DateTime(2014, 08, 31, 22, 00, 00), new DateTime(2014, 09, 30, 22, 00, 00));
-
+            var weather = v.GetWeatherData(new DateTime(2014, 08, 31, 22, 00, 00), new DateTime(2014, 09, 30, 22, 00, 00));
+            var metergr = v.GetExternalDataMeters();
+            var extdata = v.GetExternalData(new DateTime(2014, 08, 31, 22, 00, 00), new DateTime(2014, 09, 30, 22, 00, 00));
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RestCallsTests.controller
 {
-     public class ResponceTable
+     public class ResponseTable
     {
         [DeserializeAs(Name = "cols")]
         public List<Column> columns { get; set; }

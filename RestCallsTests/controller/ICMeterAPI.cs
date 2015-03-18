@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace RestCallsTests.controller
 {
+    /// <summary>
+    ///API Doc Changelog 2014-10-21
+    /// </summary>
    public class ICMeterAPI
     {
        const string BaseUrl = "https://app.ic-meter.com/icm/";
@@ -52,12 +55,12 @@ namespace RestCallsTests.controller
        /// <param name="t">Token</param>
        /// <param name="device">Device QR code</param>
        /// <param name="from">Datetime form</param>
-       /// <param name="to">DAtetime to</param>
+       /// <param name="to">Datetime to</param>
        /// <returns></returns>
-       public ResponceTable GetIndoorData(Token t, string device, DateTime from, DateTime to)
+       public ResponseTable GetIndoorData(Token t, string device, DateTime from, DateTime to)
        {
-           string fromdate = from.ToString("yyyy-MM-ddThh:mm:ssZ");
-           string todate = to.ToString("yyyy-MM-ddThh:mm:ssZ");
+           string fromdate = from.ToString("yyyy-MM-ddTHH:mm:ssZ");
+           string todate = to.ToString("yyyy-MM-ddTHH:mm:ssZ");
 
 
            var client = new RestClient(BaseUrl);
@@ -66,7 +69,7 @@ namespace RestCallsTests.controller
            request.AddParameter("fromDate", fromdate);
            request.AddParameter("toDate", todate);
            request.AddParameter("access_token", t.access_token);
-           RestResponse<ResponceTable> response = client.Execute<ResponceTable>(request) as RestResponse<ResponceTable>;
+           RestResponse<ResponseTable> response = client.Execute<ResponseTable>(request) as RestResponse<ResponseTable>;
            return response.Data;
        }
 
@@ -76,13 +79,107 @@ namespace RestCallsTests.controller
        ///timestamp range, limited to maximum 31 days. If range is above 31 days, the returned data is 
        /// truncated.
        /// </summary>
-       /// <param name="from"></param>
-       /// <param name="to"></param>
+       /// <param name="from">Datetime form</param>
+       /// <param name="to">Datetime to</param>
        /// <returns></returns>
-       public ResponceTable GetIndoorData(DateTime from , DateTime to)
+       public ResponseTable GetIndoorData(DateTime from , DateTime to)
        {
            return GetIndoorData(Token, _qr, from, to);
        }
+
+       /// <summary>
+       /// Following request returns weather data of measurements within specified timestamp range, 
+       /// limited to maximum 31 days. If range is above 31 days, the returned data is truncated.
+       /// </summary>
+       /// <param name="t">Token</param>
+       /// <param name="device">Device QR code</param>
+       /// <param name="from">Datetime form</param>
+       /// <param name="to">Datetime to</param>
+       /// <returns></returns>
+       public ResponseTable GetWeatherData(Token t, string device, DateTime from, DateTime to)
+       {
+           string fromdate = from.ToString("yyyy-MM-ddTHH:mm:ssZ");
+           string todate = to.ToString("yyyy-MM-ddTHH:mm:ssZ");
+           var client = new RestClient(BaseUrl);
+
+           var request = new RestRequest("api/weather/1.1/days/range/" + device, Method.GET);
+           request.AddParameter("fromDate", fromdate);
+           request.AddParameter("toDate", todate);
+           request.AddParameter("access_token", t.access_token);
+           RestResponse<ResponseTable> response = client.Execute<ResponseTable>(request) as RestResponse<ResponseTable>;
+           return response.Data;
+       }
+
+       /// <summary>
+       /// TEST Method uses hardcoded Device QR 
+       /// Following request returns weather data of measurements within specified timestamp range, 
+       /// limited to maximum 31 days. If range is above 31 days, the returned data is truncated.
+       /// </summary>
+       /// <param name="from">Datetime form</param>
+       /// <param name="to">Datetime to</param>
+       /// <returns></returns>
+       public ResponseTable GetWeatherData( DateTime from, DateTime to)
+       {
+           return GetWeatherData(Token, _qr, from, to);
+       }
+
+       /// <summary>
+       /// list visible external meters groups
+       /// </summary>
+       /// <returns></returns>
+       public List<MeterGroup> GetExternalDataMeters()
+       {
+           return GetExternalDataMeters(Token);
+       }
+       /// <summary>
+       /// list visible external meters groups
+       /// </summary>
+       /// <param name="t">Token</param>
+       /// <returns></returns>
+       public List<MeterGroup> GetExternalDataMeters(Token t)
+       {
+           var client = new RestClient(BaseUrl);
+
+           var request = new RestRequest("api/externaldata/1.0/meters", Method.GET);
+           request.AddParameter("access_token", t.access_token);
+           RestResponse<List<MeterGroup>> response = client.Execute<List<MeterGroup>>(request) as RestResponse<List<MeterGroup>>;
+           return response.Data;
+       }
+
+       /// <summary>
+       /// External data measurements – data range of hourly measurements, for maximum 31 days
+       /// </summary>
+       /// <param name="t">Token</param>
+       /// <param name="device">Device ID</param>
+       /// <param name="from">Datetime form</param>
+       /// <param name="to">Datetime to</param>
+       /// <returns></returns>
+       public ResponseTable GetExternalData(Token t, string device, DateTime from, DateTime to)
+       {
+           string fromdate = from.ToString("yyyy-MM-ddTHH:mm:ssZ");
+           string todate = to.ToString("yyyy-MM-ddTHH:mm:ssZ");
+           var client = new RestClient(BaseUrl);
+
+           var request = new RestRequest("api/externaldata/1.0/measurements/range/" + device, Method.GET);
+           request.AddParameter("fromDate", fromdate);
+           request.AddParameter("toDate", todate);
+           request.AddParameter("access_token", t.access_token);
+           RestResponse<ResponseTable> response = client.Execute<ResponseTable>(request) as RestResponse<ResponseTable>;
+           return response.Data;
+       }
+
+       /// <summary>
+       /// TEST Method uses hardcoded Device ID 
+       /// External data measurements – data range of hourly measurements, for maximum 31 days
+       /// </summary>
+       /// <param name="from">Datetime form</param>
+       /// <param name="to">Datetime to</param>
+       /// <returns></returns>
+       public ResponseTable GetExternalData(DateTime from, DateTime to)
+       {
+           return GetExternalData(Token, _meterId, from, to);
+       }
+
     }
 
 
